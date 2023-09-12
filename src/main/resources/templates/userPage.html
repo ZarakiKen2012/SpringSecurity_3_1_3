@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+      integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<header class="bg-light p-3">
+    <nav class="navbar navbar-default" role="navigation">
+        <div class="container-fluid" style="background-color: #282828">
+            <h4>
+                <form class="navbar-form navbar-left">
+                    <span style="color: white" th:text="${#authentication.principal.person.getFirstName()}"></span>
+                    <span style="color: white"> with roles: </span>
+                    <span style="color: white" th:each="authority : ${#authentication.authorities}"
+                          th:text="${#strings.substring(authority.getAuthority(), 5)} + ' '"></span>
+                </form>
+            </h4>
+            <ul class="nav navbar-nav navbar-right">
+                <form action="/logout">
+                    <button style="color: gray" type="submit" class="btn btn-link">Logout</button>
+                </form>
+            </ul>
+        </div>
+    </nav>
+</header>
+<div class="container-fluid">
+    <div class="row">
+        <!-- Панель навигации слева -->
+        <nav class="col-md-3 navbar-light" style="width: 10%;height: 100vh;background-color: #e3f2fd;">
+            <div class="d-flex flex-column p-3">
+                <ul class="nav flex-column">
+                    <li class="nav-item">
+                        <a class="nav-link text-dark" id="user-link">User</a>
+                    </li>
+                    <li class="nav-item" th:if="${role.getRole() == 'ADMIN'}">
+                        <a class="nav-link text-dark" href="/admin" id="admin-link">Admin</a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+        <div class="col-md-9">
+            <div id="user-content">
+                <h3>User information page</h3>
+                <p>About user</p>
+                <table class="table table-bordered table-striped">
+                    <thead class="bg-primary text-white">
+                    <tr>
+                        <th scope="col">ID</th>
+                        <th scope="col">First Name</th>
+                        <th scope="col">Last Name</th>
+                        <th scope="col">Age</th>
+                        <th scope="col">Role</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td th:text="${#authentication.principal.person.getId()}"/>
+                        <td th:text="${#authentication.principal.person.getFirstName()}"/>
+                        <td th:text="${#authentication.principal.person.getLastName()}"/>
+                        <td th:text="${#authentication.principal.person.getAge()}"/>
+                        <td>
+                        <span th:each="authority : ${#authentication.authorities}"
+                              th:text="${#strings.substring(authority.getAuthority(), 5)} + ' '">
+                        </span>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
